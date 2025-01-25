@@ -17,13 +17,10 @@ class TripView(ViewSet):
     
     def list(self, request):
         """func to list all trips"""
-        trips = Trip.objects.all()
+        trip = Trip.objects.all()
+
         
-        destination = request.query_params.get('destination', None)
-        if destination is not None:
-            trips = trips.filter(destination=destination)
-        
-        serializer = TripSerializer(trips, many=True)
+        serializer = TripSerializer(trip, many=True)
         return Response(serializer.data)
     
     def create(self, request):
@@ -32,20 +29,26 @@ class TripView(ViewSet):
         Returns:
             Response -- JSON serialized trip instance
         """
+        try:
+            user = User.objects.get(uid=request.data["uid"])
+            mode_of_travel = TravelMode.objects.get(pk=request.data["mode_of_travel_id"])
+            trip = Trip.objects.create(
+                user=user,
+                destination=request.data["destination"],
+                start_date=request.data["start_date"],
+                end_date=request.data["end_date"],
+                mode_of_travel=mode_of_travel,
+                number_of_travelers=request.data["number_of_travelers"],
+                people_on_trip=request.data["people_on_trip"],
+                notes=request.data["notes"]
+            )
 
-        trip = Trip.objects.create(
-            user=request.data["user"],
-            destination=request.data["destination"],
-            start_date=request.data["start_date"],
-            end_date=request.data["end_date"],
-            mode_of_travel=request.data["mode_of_travel"],
-            number_of_travelers=request.data["number_of_travelers"],
-            people_on_trip=request.data["people_on_trip"],
-            notes=request.data["notes"]
-        )
-
-        serializer = TripSerializer(trip)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+            serializer = TripSerializer(trip)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except User.DoesNotExist as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+        except TravelMode.DoesNotExist as ex: 
+            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
     
     def update(self, request, pk):
         """Handle PUT requests for a trip
