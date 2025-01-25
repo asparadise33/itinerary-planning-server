@@ -1,5 +1,5 @@
 from django.db import models
-from models import Location
+from .location import Location
 
 class TripLocation(models.Model):
    # trip_id = models.ForeignKey(Trip, on_delete=models.CASCADE, related_name='locationTrips')
