@@ -18,11 +18,12 @@ from django.contrib import admin
 from django.urls import path
 from rest_framework import routers
 from django.conf.urls import include
-from itineraryapi.views import UserView, check_user, register_user
+from itineraryapi.views import UserView, check_user, register_user, LocationView
 
 router = routers.DefaultRouter(trailing_slash=False)
 
 router.register(r'users', UserView, 'user')
+router.register(r'locations', LocationView, 'location')
 
 urlpatterns = [
     path('admin/', admin.site.urls),

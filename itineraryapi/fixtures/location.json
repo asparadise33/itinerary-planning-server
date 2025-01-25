@@ -1,0 +1,34 @@
+[
+  {
+    "model": "itineraryapi.location",
+    "pk": 1,
+    "fields": {
+      "place_name": "Istanbul"
+    }
+  },
+
+  {
+    "model": "itineraryapi.location",
+    "pk": 2,
+    "fields": {
+      "place_name": "Montreal"
+    }
+  },
+
+  {
+    "model": "itineraryapi.location",
+    "pk": 3,
+    "fields": {
+      "place_name": "New Orleans"
+    }
+
+  },
+
+  {
+    "model": "itineraryapi.location",
+    "pk": 4,
+    "fields": {
+      "place_name": "Lake Tahoe"
+    }
+  }
+]
