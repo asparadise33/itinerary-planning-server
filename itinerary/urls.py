@@ -18,11 +18,12 @@ from django.contrib import admin
 from django.urls import path
 from rest_framework import routers
 from django.conf.urls import include
-from itineraryapi.views import UserView, check_user, register_user, TravelModeView, TripLocationView
+from itineraryapi.views import UserView, check_user, register_user, TravelModeView, TripLocationView, LocationView
 
 router = routers.DefaultRouter(trailing_slash=False)
 
 router.register(r'users', UserView, 'user')
+router.register(r'locations', LocationView, 'location')
 router.register(r'travelmodes', TravelModeView, 'travelmode')
 router.register(r'triplocations', TripLocationView, 'triplocation')
 
