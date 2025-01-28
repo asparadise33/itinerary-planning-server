@@ -1,0 +1,70 @@
+[
+  {
+    "model": "itineraryapi.trip",
+    "pk": 1,
+    "fields": {
+        "user": 1,
+        "destination": "Turkey",
+        "start_date": "2025-01-27",
+        "end_date": "2025-01-27",
+        "mode_of_travel": 1,
+        "number_of_travelers": 2,
+        "people_on_trip": "Bill and Ted",
+        "notes": "We trippin",
+        "created_at": "2025-01-28T00:57:10.647643Z",
+        "updated_at": "2025-01-28T00:57:10.648641Z"
+    }
+  },
+
+  {
+    "model": "itineraryapi.trip",
+    "pk": 2,
+    "fields": {
+        "user": 1,
+        "destination": "Canada",
+        "start_date": "2025-01-27",
+        "end_date": "2025-01-27",
+        "mode_of_travel": 4,
+        "number_of_travelers": 2,
+        "people_on_trip": "Ozzy and Mike",
+        "notes": "Oh Canada!",
+        "created_at": "2025-01-28T00:57:10.647643Z",
+        "updated_at": "2025-01-28T00:57:10.648641Z"
+    }
+  },
+
+  {
+    "model": "itineraryapi.trip",
+    "pk": 3,
+    "fields": {
+        "user": 1,
+        "destination": "Louisiana",
+        "start_date": "2025-01-27",
+        "end_date": "2025-01-27",
+        "mode_of_travel": 3,
+        "number_of_travelers": 2,
+        "people_on_trip": "Abby, Amy and Nick",
+        "notes": "Here we come Creole food, we are ready.",
+        "created_at": "2025-01-28T00:57:10.647643Z",
+        "updated_at": "2025-01-28T00:57:10.648641Z"
+    }
+  },
+
+  {
+    "model": "itineraryapi.trip",
+    "pk": 4,
+    "fields": {
+        "user": 1,
+        "destination": "Nevada",
+        "start_date": "2025-01-27",
+        "end_date": "2025-01-27",
+        "mode_of_travel": 2,
+        "number_of_travelers": 2,
+        "people_on_trip": "Dustin and Abby",
+        "notes": "Lake swimming and gambling",
+        "created_at": "2025-01-28T00:57:10.647643Z",
+        "updated_at": "2025-01-28T00:57:10.648641Z"
+    }
+  }
+
+  ]

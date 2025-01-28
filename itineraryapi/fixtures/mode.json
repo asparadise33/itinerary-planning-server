@@ -1,0 +1,34 @@
+[
+  {
+    "model": "itineraryapi.travelmode",
+    "pk": 1,
+    "fields": {
+      "type_of_travel": "Plane"
+    }
+  },
+
+  {
+    "model": "itineraryapi.travelmode",
+    "pk": 2,
+    "fields": {
+      "type_of_travel": "Train"
+    }
+  },
+
+  {
+    "model": "itineraryapi.travelmode",
+    "pk": 3,
+    "fields": {
+      "type_of_travel": "Automobile"
+    }
+
+  },
+
+  {
+    "model": "itineraryapi.travelmode",
+    "pk": 4,
+    "fields": {
+      "type_of_travel": "Walking"
+    }
+  }
+]

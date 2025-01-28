@@ -75,7 +75,7 @@ Follow these steps to set up and run the project:
 
 3. Load each fixtures into the database:
     ```sh
-    python manage.py loaddata fixture_file_name.json
+    python manage.py loaddata trip/mode/location
     ```
 
 4. Verify the fixtures were loaded correctly:
@@ -84,6 +84,8 @@ Follow these steps to set up and run the project:
     Database and verify the data is in the explorer
     click file_name_item_name
     click play to the right of the item name
+    OR
+    Look in your DB SQL lite and review all fixtures there
     ```
 
 ## HOW TO CALL ENDPOINTS IN REACT
@@ -97,12 +99,7 @@ Follow these steps to set up and run the project:
 2. At the top of your API page:
     ```sh
     const endpoint = process.env.NEXT_PUBLIC_DATABASE_URL;
-    ```
-
-3. Promise fetch call should look like this:
-    ```sh
-    fetch(`${endpoint}TBD`, {
-    ```      
+     ```      
 
 
 
