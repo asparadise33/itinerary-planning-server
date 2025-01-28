@@ -1,0 +1,9 @@
+[{
+  "model": "itineraryapi.user",
+    "pk": 1,
+    "fields": {
+    "name": "Dusty",
+      "uid": "whatevs",
+      "bio": "dustybuns 4 life"
+  }
+}]
