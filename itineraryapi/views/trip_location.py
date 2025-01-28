@@ -34,11 +34,10 @@ class TripLocationView(ViewSet):
             Response -- JSON serialized trip location instance
         """
 
-        tripId = Trip.objects.get(pk=request.data["trip_id"]),
-        locationId = Location.objects.get(pk=request.data["location_id"])
+
         tripLocation = TripLocation.objects.create(
-            trip= tripId,
-            location = locationId,
+            trip= Trip.objects.get(pk=request.data["trip_id"]),
+            location = Location.objects.get(pk=request.data["location_id"])
         )
 
         serializer = TripLocationSerializer(tripLocation)
