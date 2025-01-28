@@ -2,7 +2,7 @@ from django.http import HttpResponseServerError
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
-from itineraryapi.models import TripLocation
+from itineraryapi.models import TripLocation, Trip, Location
 
 class TripLocationView(ViewSet):
     """Trip Location Views"""
@@ -34,8 +34,8 @@ class TripLocationView(ViewSet):
             Response -- JSON serialized trip location instance
         """
 
-        tripId=request.data["trip_id"],
-        locationId=request.data["location_id"]
+        tripId = Trip.objects.get(pk=request.data["trip_id"]),
+        locationId = Location.objects.get(pk=request.data["location_id"])
         tripLocation = TripLocation.objects.create(
             trip= tripId,
             location = locationId,
