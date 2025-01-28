@@ -10,16 +10,16 @@ class TripView(ViewSet):
         """func to get single trip"""
         try:
             trip = Trip.objects.get(pk=pk)
-            serializer = TripSerializer(trip)
+            locations = Location.objects.filter(tripLocations__id=trip.id)
+            trip.locations=locations
+            serializer = SingleTripSerializer(trip)
             return Response(serializer.data)
         except Trip.DoesNotExist as ex:
-            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'Trip not found': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
     
     def list(self, request):
         """func to list all trips"""
-        trip = Trip.objects.all()
-
-        
+        trip = Trip.objects.all() 
         serializer = TripSerializer(trip, many=True)
         return Response(serializer.data)
     
@@ -46,9 +46,9 @@ class TripView(ViewSet):
             serializer = TripSerializer(trip)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         except User.DoesNotExist as ex:
-            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'User not found, create an account!': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
         except TravelMode.DoesNotExist as ex: 
-            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'No mode of travel found.': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
     
     def update(self, request, pk):
         """Handle PUT requests for a trip
@@ -56,12 +56,14 @@ class TripView(ViewSet):
         Returns:
             Response -- Empty body with 204 status code
         """
+        user = User.objects.get(uid=request.data["uid"])
+        mode_of_travel = TravelMode.objects.get(pk=request.data["mode_of_travel_id"])
         trip = Trip.objects.get(pk=pk)
-        trip.user = request.data["user"]
+        trip.user = user
         trip.destination = request.data["destination"]
         trip.start_date = request.data["start_date"]
         trip.end_date = request.data["end_date"]
-        trip.mode_of_travel = request.data["mode_of_travel"]
+        trip.mode_of_travel = mode_of_travel
         trip.number_of_travelers = request.data["number_of_travelers"]
         trip.people_on_trip = request.data["people_on_trip"]
         trip.notes = request.data["notes"]
@@ -73,22 +75,20 @@ class TripView(ViewSet):
         trip = Trip.objects.get(pk=pk)
         trip.delete()
         return Response(None, status=status.HTTP_204_NO_CONTENT)
-class TravelModeSerializer(serializers.ModelSerializer):
-    """JSON serializer for travel modes
 
-    Arguments:
-        serializers
+class LocationSerializer(serializers.ModelSerializer):
+    """JSON serializer for locations
     """
     class Meta:
-        model = TravelMode
-        fields = ('id', 'type_of_travel')
-        depth = 1
-class UserSerializer(serializers.ModelSerializer):
-    """JSON serializer for users"""
-    class Meta:
-        model = User
-        fields = ("id", "name", "bio", "uid", "created_at")
+        model = Location
+        fields = ('id', 'place_name')
 
+class SingleTripSerializer(serializers.ModelSerializer):
+    """JSON serializer for trips"""
+    locations = LocationSerializer(many=True)
+    class Meta:
+        model = Trip
+        fields = ('id', 'user', 'destination', 'start_date', 'end_date', 'mode_of_travel', 'number_of_travelers', 'people_on_trip', 'notes', 'locations', 'created_at', 'updated_at')
 class TripSerializer(serializers.ModelSerializer):
     """JSON serializer for trips"""
     class Meta:
