@@ -12,6 +12,8 @@ class TripView(ViewSet):
             trip = Trip.objects.get(pk=pk)
             locations = Location.objects.filter(tripLocations__id=trip.id)
             trip.locations=locations
+            mode_of_travel = TravelMode.objects.filter(travelMode__id=trip.id)
+            trip.mode_of_travel=mode_of_travel
             serializer = SingleTripSerializer(trip)
             return Response(serializer.data)
         except Trip.DoesNotExist as ex:
@@ -75,7 +77,21 @@ class TripView(ViewSet):
         trip = Trip.objects.get(pk=pk)
         trip.delete()
         return Response(None, status=status.HTTP_204_NO_CONTENT)
+class UserSerializer(serializers.ModelSerializer):
+    """JSON serializer for users"""
+    class Meta:
+        model = User
+        fields = ("id", "name", "bio", "uid", "created_at")
+class TravelModeSerializer(serializers.ModelSerializer):
+    """JSON serializer for travel modes
 
+    Arguments:
+        serializers
+    """
+    class Meta:
+        model = TravelMode
+        fields = ('id', 'type_of_travel')
+        depth = 1
 class LocationSerializer(serializers.ModelSerializer):
     """JSON serializer for locations
     """
@@ -86,11 +102,16 @@ class LocationSerializer(serializers.ModelSerializer):
 class SingleTripSerializer(serializers.ModelSerializer):
     """JSON serializer for trips"""
     locations = LocationSerializer(many=True)
+    mode_of_travel = TravelModeSerializer()
+    user = UserSerializer()
     class Meta:
         model = Trip
         fields = ('id', 'user', 'destination', 'start_date', 'end_date', 'mode_of_travel', 'number_of_travelers', 'people_on_trip', 'notes', 'locations', 'created_at', 'updated_at')
 class TripSerializer(serializers.ModelSerializer):
     """JSON serializer for trips"""
+    mode_of_travel = TravelModeSerializer()
+    user = UserSerializer()
     class Meta:
         model = Trip
         fields = ('id', 'user', 'destination', 'start_date', 'end_date', 'mode_of_travel', 'number_of_travelers', 'people_on_trip', 'notes', 'created_at', 'updated_at')
+        depth = 3
