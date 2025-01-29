@@ -12,8 +12,6 @@ class TripView(ViewSet):
             trip = Trip.objects.get(pk=pk)
             locations = Location.objects.filter(tripLocations__id=trip.id)
             trip.locations=locations
-            mode_of_travel = TravelMode.objects.filter(travelMode__id=trip.id)
-            trip.mode_of_travel=mode_of_travel
             serializer = SingleTripSerializer(trip)
             return Response(serializer.data)
         except Trip.DoesNotExist as ex:
