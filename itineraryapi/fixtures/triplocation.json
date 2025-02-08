@@ -1,0 +1,10 @@
+[
+  {
+    "model": "itineraryapi.triplocation",
+    "pk": 1,
+    "fields": {
+      "trip": "2",
+      "location": "1"
+    }
+  }
+]
