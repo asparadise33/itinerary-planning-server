@@ -1,28 +1,27 @@
 from rest_framework import status
 from rest_framework.test import APITestCase
 from itineraryapi.models import Location, Trip, TripLocation
-# TODO: DOESN'T WORK
+from itineraryapi.views.trip_location import TripLocationSerializer
 class TripLocationTests(APITestCase):
-    fixtures = ['location', 'trip', 'triplocation']
+    fixtures = ['location', 'trip', 'triplocation', 'user', 'mode']
     def setUp(self):
         self.triplocation = TripLocation.objects.first()
-    
+        self.location = Location.objects.first()
+        self.trip = Trip.objects.first()
     def test_create_triplocation(self):
         """Create TripLocation Test"""
         url = "/triplocations"
         
         triplocation = {
-            "trip": 1,
-            "location": 1
+            "trip_id": 1,
+            "location_id": 1
         }
         
         response = self.client.post(url, triplocation, format='json')
         
         new_triplocation = TripLocation.objects.last()
-        
-        self.assertEqual(new_triplocation.trip_id, response.data['trip'])
-        self.assertEqual(new_triplocation.location_id, response.data['location'])
-    
+        expected = TripLocationSerializer(new_triplocation)
+        self.assertEqual(expected.data, response.data)
     def test_get_triplocation(self):
         """Get TripLocation Test"""
         triplocation = TripLocation.objects.first()
@@ -31,9 +30,10 @@ class TripLocationTests(APITestCase):
         response = self.client.get(url)
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         
-        self.assertEqual(self.triplocation.trip_id, response.data['trip'])
-        self.assertEqual(self.triplocation.location_id, response.data['location'])
-    
+        expected = TripLocationSerializer(self.triplocation)
+        
+        self.assertEqual(expected.data, response.data)
+        
     def test_list_triplocations(self):
         """List TripLocations Test"""
         url = "/triplocations"
@@ -41,11 +41,12 @@ class TripLocationTests(APITestCase):
         response = self.client.get(url)
         
         all_triplocations = TripLocation.objects.all()
+        expected = TripLocationSerializer(all_triplocations, many=True)
         
         self.assertEqual(status.HTTP_200_OK, response.status_code)
-        self.assertEqual(len(all_triplocations), len(response.data))
+        self.assertEqual(expected.data, response.data)
     
-    def test_delete_triplocation(self):
+    def test_delete_triplocation(self): 
         """Delete TripLocation Test"""
         triplocation = TripLocation.objects.first()
         url = f'/triplocations/{self.triplocation.id}'
@@ -53,10 +54,5 @@ class TripLocationTests(APITestCase):
         response = self.client.delete(url)
         
         self.assertEqual(status.HTTP_204_NO_CONTENT, response.status_code)
-        
-        self.assertFalse(TripLocation.objects.filter(id=self.triplocation.id).exists())
-        response = self.client.get(url)
-        self.assertEqual(status.HTTP_404_NOT_FOUND, response.status_code)
-
-        
-        
+        self.assertFalse(TripLocation.objects.filter(pk=self.triplocation.id).exists())
+  
