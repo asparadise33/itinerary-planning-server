@@ -6,16 +6,18 @@ from itineraryapi.views.trip import TripSerializer
 # TODO: DOESN'T WORK 
 #     KeyError: 'uid'
 class TripTests(APITestCase):
+
+  fixtures = ['user', 'trip', 'location', 'mode']
   def setUp(self):
-    fixtures = ['user', 'trip', 'location', 'travelmode']
-    self.trip = Trip.objects.first()
-    self.location = Location.objects.first()
-    self.travelmode = TravelMode.objects.first()
+    self.user = User.objects.first()
+    
   def test_create_trip(self):
     """Create Trip Test"""
+    """Create Trip Test"""
     url = "/trips"
+    
     trip = {
-      "user": "{whatevs}",
+      "user": 1,
       "destination": "Turkey",
       "start_date": "2025-01-27",
       "end_date": "2025-01-27",
