@@ -10,7 +10,7 @@ class TripView(ViewSet):
         """func to get single trip"""
         try:
             trip = Trip.objects.get(pk=pk)
-            locations = Location.objects.filter(tripLocations__id=trip.id)
+            locations = Location.objects.filter(tripLocations__trip_id=trip)
             trip.locations=locations
             serializer = SingleTripSerializer(trip)
             return Response(serializer.data)
@@ -42,7 +42,7 @@ class TripView(ViewSet):
                 people_on_trip=request.data["people_on_trip"],
                 notes=request.data["notes"]
             )
-
+            
             serializer = TripSerializer(trip)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         except User.DoesNotExist as ex:
